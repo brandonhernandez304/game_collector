@@ -1,0 +1,20 @@
+{% extends 'base.html' %} {% block content %}
+
+<h1>Video Game List</h1>
+
+{% for cat in cats %}
+<div class="card">
+	<a href="{% url 'detail' videogame.id %}">
+		<div class="card-content">
+			<span class="card-title">{{ videogame.name }}</span>
+			<p>Genre: {{ videogame.genre }}</p>
+			<p>Description: {{ videogame.description }}</p>
+			{% if videogame.age > 15 %}
+			<p>Woah, {{ videogame.age }} years old? that's retro bro!</p>
+			{% else %}
+			<p>Age: {{ videogame.age }}</p>
+			{% endif %}
+		</div>
+	</a>
+</div>
+{% endfor %} {% endblock %}
