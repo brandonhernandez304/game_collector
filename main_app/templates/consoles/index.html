@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Consoles List</h1>
+{% for console in object_list %}
+<div class="card">
+    <a href="{% url 'consoles_detail' console.id %}">
+        <div class="card-content">
+            <span class="card-title">A <span class="{{ console.color }}-text"></span> {{ console.name }}, {{ console.edition }} Edition</span>
+        </div>
+    </a>
+</div>
+{% endfor %}
+
+
+{% endblock %}

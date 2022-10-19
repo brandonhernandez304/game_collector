@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Video Game Collector</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
 
 
@@ -19,12 +20,16 @@
             <div class="nav-wrapper">
                 <ul>
                     <li>
-                        <a href="/" class="left brand-logo"> VideoGameCollector</a>
+                        <a href="/" class="left brand-logo"> Video GameCollector</a>
                     </li>
                 </ul>
                 <ul class="right">
-                    <li><a href="/about">About</a></li>
-                    <ly><a href="/videgames">View All My Video Games</a></ly>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'video_games_index' %}">View All My Video Games</a></li>
+                    <li><a href="{% url 'video_games_create' %}">Add a Game</a></li>
+                    <li><a href="{% url 'consoles_create' %}">Add a Console</a></li>
+                    <li><a href="{% url 'consoles_index' %}">View All My Consoles</a></li>
+
                 </ul>
             </div>
         </nav>

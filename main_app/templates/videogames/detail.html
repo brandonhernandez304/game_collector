@@ -1,0 +1,105 @@
+{% extends 'base.html' %} {% block content %}
+
+<h1>Video Game Details</h1>
+
+<div class="row">
+    <div class="col s6">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">{{ video_game.name }}</span>
+                <p>Genre: {{ video_game.genre }}</p>
+                <p>Description: {{ video_game.description }}</p>
+                {% if video_game.age > 15 %}
+                <p>Woah, {{ video_game.age }} years old? that's retro bro!</p>
+                {% else %}
+                <p>Age: {{ video_game.age }}</p>
+                {% endif %}
+                <div class="card-action">
+                    <a href="{% url 'video_games_update' video_game.id %}">Edit</a>
+                    <a href="{% url 'video_games_delete' video_game.id %}">Delete</a>
+                </div>
+            </div>
+        </div>
+        <div class="col s6">
+            <form action="{% url 'add_playing' video_game.id %}" method="post">
+                {% csrf_token %} {{ playing_form.as_p }}
+                <input type="submit" class="btn green" value="Add Playing" />
+            </form>
+            <table class="striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for playing in video_game.playing_set.all %}
+                    <tr>
+                        <td>{{playing.date}}</td>
+                        <td>{{playing.get_time_display}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <hr />
+    <div class="row">
+
+        <div class="col s6">
+            <h3>What console(s) {{ video_game.name }} is on</h3>
+            {% if video_game.consoles.count %} {% for console in video_game.consoles.all %}
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">
+                        A <span class="{{ console.color.lower }}-text">
+                            {{ console.color }}</span> {{ console.name }}, {{ console.edition }} Edition.
+                    </span>
+                </div>
+            </div>
+            {% endfor %} {% else %}
+            <h5>Not owned on any consoles :(</h5>
+            {% endif %}
+        </div>
+
+
+        <!-- Available consoles after this -->
+        <div class="col s6">
+            <h3>Available Consoles</h3>
+            {% if consoles.count %}
+            {% for consoles in consoles.all %}
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">
+                        A <span class="{{ console.color }}-text">{{ console.color }}</span> {{ console.name }}, {{ console.edition }} Edition.
+                    </span>
+                </div>
+                <div class="card-action">
+                    <form action="{% url 'assoc_console' video_game.id console.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">Add</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <h5>{{video_game.name}} Is already on all consoles available</h5>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        var dateEl = document.getElementById('id_date');
+        M.Datepicker.init(dateEl, {
+            format: 'yyyy-mm-dd',
+            defaultDate: new Date(),
+            setDefaultDate: true,
+            autoClose: true
+        });
+
+        // add additional JS to initialize select below
+        var selectEl = document.getElementById('id_time');
+        M.FormSelect.init(selectEl);
+    </script>
+    {% endblock %}
