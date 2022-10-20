@@ -13,29 +13,29 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
-def video_games_index(request):
-    video_games = VideoGame.objects.all()
-    return render(request, 'videogames/index.html', {'videogames':video_games})
+def games_index(request):
+    games = VideoGame.objects.all()
+    return render(request, 'videogames/index.html', {'games':games})
 
 # update this view function
-def video_games_detail(request, video_game_id):
-  video_game = VideoGame.objects.get(id=video_game_id)
+def games_detail(request, game_id):
+  game = VideoGame.objects.get(id=game_id)
   # instantiate PlayingForm to be rendered in the template
   playing_form = PlayingForm()
  
   # displaying unassociated consoles
-  consoles_video_game_doesnt_have = Console.objects.exclude(id__in = video_game.consoles.all().values_list('id'))
+  consoles_game_doesnt_have = Console.objects.exclude(id__in = game.consoles.all().values_list('id'))
 
   return render(request, 'videogames/detail.html', {
-    # including the video_game and playing form 
-    'video_game': video_game,
+    # including the game and playing form 
+    'game': game,
     'playing_form': playing_form,
-    'consoles' : consoles_video_game_doesnt_have,
+    'consoles' : consoles_game_doesnt_have,
   })
 class VideoGameCreate(CreateView):
     model = VideoGame
     fields = ['name','genre','description','age']
-    # success_url = '/videogames/' 
+    success_url = '/videogames/' 
 
 class VideoGameUpdate(UpdateView):
     model = VideoGame
@@ -65,15 +65,15 @@ class ConsoleList(ListView):
     model = Console
     template_name = 'consoles/index.html'
 
-def add_playing(request, video_game_id):
+def add_playing(request, game_id):
     form = PlayingForm(request.POST)
     if form.is_valid():
         new_playing = form.save(commit=False)
-        new_playing.video_game_id = video_game_id
+        new_playing.game_id = game_id
         new_playing.save()
-    return redirect('detail', video_game_id=video_game_id)
+    return redirect('detail', game_id=game_id)
     
-def assoc_console(request, video_game_id, console_id):
+def assoc_console(request, game_id, console_id):
   # Note, can pass a console's id instead of the whole object
-   VideoGame.objects.get(id=video_game_id).consoles.add(console_id)
-   return redirect('detail', video_game_id=video_game_id)
+   VideoGame.objects.get(id=game_id).consoles.add(console_id)
+   return redirect('detail', game_id=game_id)

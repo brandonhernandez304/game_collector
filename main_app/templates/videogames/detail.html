@@ -6,23 +6,23 @@
     <div class="col s6">
         <div class="card">
             <div class="card-content">
-                <span class="card-title">{{ video_game.name }}</span>
-                <p>Genre: {{ video_game.genre }}</p>
-                <p>Description: {{ video_game.description }}</p>
-                {% if video_game.age > 15 %}
-                <p>Woah, {{ video_game.age }} years old? that's retro bro!</p>
+                <span class="card-title">{{ game.name }}</span>
+                <p>Genre: {{ game.genre }}</p>
+                <p>Description: {{ game.description }}</p>
+                {% if game.age > 15 %}
+                <p>Woah, {{ game.age }} years old? that's retro bro!</p>
                 {% else %}
-                <p>Age: {{ video_game.age }}</p>
+                <p>Age: {{ game.age }}</p>
                 {% endif %}
                 </div>
                 <div class="card-action">
-                    <a href="{% url 'video_games_update' video_game.id %}">Edit</a>
-                    <a href="{% url 'video_games_delete' video_game.id %}">Delete</a>
+                    <a href="{% url 'game_update' game.id %}">Edit</a>
+                    <a href="{% url 'game_delete' game.id %}">Delete</a>
                 </div>
             </div>
         </div>
         <div class="col s6">
-            <form action="{% url 'add_playing' video_game.id %}" method="post">
+            <form action="{% url 'add_playing' game.id %}" method="post">
                 {% csrf_token %} {{ playing_form.as_p }}
                 <input type="submit" class="btn green" value="Add Playing" />
             </form>
@@ -34,7 +34,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for playing in video_game.playing_set.all %}
+                    {% for playing in game.playing_set.all %}
                     <tr>
                         <td>{{playing.date}}</td>
                         <td>{{playing.get_time_display}}</td>
@@ -49,8 +49,8 @@
     <div class="row">
 
         <div class="col s6">
-            <h3>What console(s) {{ video_game.name }} is on</h3>
-            {% if video_game.consoles.count %} {% for console in video_game.consoles.all %}
+            <h3>What console(s) {{ game.name }} is on</h3>
+            {% if game.consoles.count %} {% for console in game.consoles.all %}
             <div class="card">
                 <div class="card-content">
                     <span class="card-title">
@@ -77,7 +77,7 @@
                     </span>
                 </div>
                 <div class="card-action">
-                    <form action="{% url 'assoc_console' %}" method="post">
+                    <form action="{% url 'assoc_console' game.id console.id %}" method="post">
                         {% csrf_token %}
                         <button type="submit" class="btn">Add</button>
                     </form>
@@ -85,7 +85,7 @@
             </div>
             {% endfor %}
             {% else %}
-            <h5>{{video_game.name}} Is already on all consoles available</h5>
+            <h5>{{game.name}} Is already on all consoles available</h5>
             {% endif %}
         </div>
     </div>

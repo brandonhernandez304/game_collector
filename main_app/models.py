@@ -28,7 +28,7 @@ class VideoGame(models.Model):
         return self.name
     
     def get_absolute_url(self):
-        return reverse('detail', kwargs={'video_game_id': self.id})
+        return reverse('games_detail', kwargs={'game_id': self.id})
 
 class Playing(models.Model):
     date = models.DateField('Playing Date')
@@ -38,8 +38,8 @@ class Playing(models.Model):
         default=TIMES[0][0]
     )
 
-    #Create a video_game_id FK
-    video_game = models.ForeignKey(VideoGame, on_delete=models.CASCADE)
+    #Create a game_id FK
+    game = models.ForeignKey(VideoGame, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.get_time_display()} on {self.date}"

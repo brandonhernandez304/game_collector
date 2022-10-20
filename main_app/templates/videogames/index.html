@@ -2,17 +2,17 @@
 
 <h1>Video Game List</h1>
 
-{% for video_game in video_games %}
+{% for game in games %}
 <div class="card">
-	<a href="{% url 'detail' video_game.id %}">
+	<a href="{% url 'detail' game.id %}">
 		<div class="card-content">
-			<span class="card-title">{{ videogame.name }}</span>
-			<p>Genre: {{ videogame.genre }}</p>
-			<p>Description: {{ videogame.description }}</p>
-			{% if videogame.age > 15 %}
-			<p>Woah, {{ videogame.age }} years old? that's retro bro!</p>
+			<span class="card-title">{{ game.name }}</span>
+			<p>Genre: {{ game.genre }}</p>
+			<p>Description: {{ game.description }}</p>
+			{% if ame.age > 15 %}
+			<p>Woah, {{ game.age }} years old? that's retro bro!</p>
 			{% else %}
-			<p>Age: {{ videogame.age }} years old</p>
+			<p>Age: {{ game.age }} years old</p>
 			{% endif %}
 		</div>
 	</a>
