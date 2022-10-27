@@ -1,5 +1,7 @@
 from django.db import models
 from django.urls import reverse
+from datetime import datetime
+from django.contrib.auth.models import User
 
 TIMES = (
     ('M', 'Morning'),
@@ -11,24 +13,25 @@ class Console(models.Model):
     name = models.CharField(max_length=50)
     color = models.CharField(max_length=50)
     edition = models.CharField(max_length=50)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
         return reverse('consoles_detail', kwargs={'pk': self.id})
 
-class VideoGame(models.Model):
+class Game(models.Model):
     name = models.CharField(max_length=100)
     genre = models.CharField(max_length=100)
     description = models.TextField(max_length=250)
     age = models.IntegerField()
     # M:M
     consoles = models.ManyToManyField(Console)
-    
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     # changes to instance methods do not require re-generation / running of migrations
     def __str__(self):
         return self.name
     
     def get_absolute_url(self):
-        return reverse('games_detail', kwargs={'game_id': self.id})
+        return reverse('detail', kwargs={'game_id': self.id})
 
 class Playing(models.Model):
     date = models.DateField('Playing Date')
@@ -39,7 +42,7 @@ class Playing(models.Model):
     )
 
     #Create a game_id FK
-    game = models.ForeignKey(VideoGame, on_delete=models.CASCADE)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.get_time_display()} on {self.date}"

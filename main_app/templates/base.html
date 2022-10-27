@@ -23,19 +23,24 @@
                         <a href="/" class="left brand-logo"> Video Game Collector</a>
                     </li>
                 </ul>
-                <ul class="right">
-                    <li><a href="{% url 'about' %}">About</a></li>
-                    <li><a href="{% url 'index' %}">View All My Video Games</a></li>
-                    <li><a href="{% url 'games_create' %}">Add a Game</a></li>
-                    <li><a href="{% url 'consoles_create' %}">Add a Console</a></li>
-                    <li><a href="{% url 'consoles_index' %}">View All My Consoles</a></li>
-
+                <ul class="right black-text">
+                    <li><a class="black-text" href="{% url 'about' %}">About</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a class="black-text" href="{% url 'consoles_create' %}">Add a Console</a></li>
+                    <li><a class="black-text" href="{% url 'consoles_index' %}">View All Consoless</a></li>
+                    <li><a class="black-text" href="{% url 'games_create' %}">Add a Game</a></li>
+                    <li><a class="black-text" href="{% url 'index' %}">View All My Games</a></li>
+                    <li><a class="black-text" href="{% url 'logout' %}">Log Out</a></li>
+                    {% else %}
+                    <li><a class="black-text" href="{% url 'signup' %}">Sign Up</a></li>
+                    <li><a class="black-text" href="{% url 'login' %}">Log In</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>
     </header>
     <main class="container">{% block content %} {% endblock %}</main>
-    <footer class="page-footer #82b1ff blue accent-1">
+    <footer class="page-footer #0d47a1 blue darken-4">
         <div class="right">
             All Rights Reserved, © 2022 Video Game Collector
         </div>
